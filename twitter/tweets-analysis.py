@@ -10,7 +10,6 @@ from sklearn.cluster import KMeans
 from gensim import corpora, models
 from nltk.stem.wordnet import WordNetLemmatizer
 
-english_vocab = set(w.lower() for w in nltk.corpus.words.words())
 sw            = stopwords.words('english')
 lemma         = WordNetLemmatizer()
 
@@ -33,15 +32,11 @@ def fetchTweetsFromFile(twitter_handle):
 
 def clean_text_and_tokenize(line):
     line   = re.sub(r'\$\w*', '', line)  # Remove tickers
-    # line   = re.sub(r'https?:\/\/.*\/\w*', '', line)  # Remove hyperlinks
-    # line   = re.sub(r'http?:/\/.*\/\w*', '', line)  # Remove hyperlinks
     line   = re.sub(r'http?:.*$', '', line)
     line   = re.sub(r'https?:.*$', '', line)
     line   = re.sub(r'pic?.*\/\w*', '', line)
-    # line   = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)"," ",line).split()) # sof -> 8376691
-    # line   = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])"," ",line).split()) # remove mentions
-
     line   = re.sub(r'[' + string.punctuation + ']+', ' ', line)  # Remove puncutations like 's
+    
     tokens = TweetTokenizer(strip_handles=True, reduce_len=True).tokenize(line)
     tokens = [w.lower() for w in tokens if w not in sw and len(w) > 2 and w.isalpha()]
     tokens = [lemma.lemmatize(word) for word in tokens]
