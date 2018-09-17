@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 from openpyxl import Workbook
 
 # 1. Fetch Results
-print ("\nFetching results.....")
 r = requests.post(
     url='http://www.indiavotes.com/ac/info?stateac=29&eid=257',
     headers={
@@ -57,7 +56,6 @@ counter  = inc = bjp = 0
 bjp_wins = []
 
 # Processing results
-print "\nProcessing results....."
 # constituencies in which margin was < #3's votes
 for place in results:
     candidates = results[place]
@@ -93,7 +91,6 @@ for place1 in bjp_wins:
             print ("%s : %s" % (place1, results[place2][2][4]))
 
 # 3. Writing to Excel book
-print "\nWriting full state results to Excel book....."
 wb            = Workbook()
 dest_filename = 'Gujarat_election_results_2017.xlsx'
 ws1           = wb.active
